@@ -1,0 +1,20 @@
+{
+  "name": "da-boys-ai",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "register": "node --env-file=.env src/register.js",
+    "track": "npx wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.12.4",
+    "vitest": "~3.2.0",
+    "wrangler": "^4.93.0"
+  },
+  "dependencies": {
+    "discord-hono": "^0.21.2"
+  }
+}

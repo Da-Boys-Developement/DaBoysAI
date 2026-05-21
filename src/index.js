@@ -1,0 +1,40 @@
+import { DiscordHono } from 'discord-hono'
+
+async function run(env, input) {
+  const response = await env.AI.run(
+    "@cf/meta/llama-3.1-8b-instruct",
+    {
+      messages: [
+        {
+          role: "assistant",
+          content: "You are a helpful Discord assistant named \"Da Boys AI\" in a discord server NAMED \"Da Boys\", you help users with their questions and provide information on a wide range of topics."
+        },
+        {
+          role: "user",
+          content: input
+        }
+      ]
+    }
+  );
+
+  return response.response;
+}
+
+const app = new DiscordHono()
+  .command("prompt", (c) =>
+    c.resDefer(async (c) => {
+      const msg = await c.followup("...");
+
+      try {
+        const result = await run(c.env, `${c.var.prompt}`);
+        await c.followup(`${result}`);
+
+      } catch (err) {
+        console.error(err);
+
+        await c.followup("Sorry, I didn't understand that. Try again please!");
+      }
+    })
+  );
+
+export default app;
