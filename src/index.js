@@ -25,7 +25,7 @@ const app = new DiscordHono()
     c.resDefer(async (c) => {
       const msg = await c.followup("...");
 
-      if (c.interaction.member.roles.includes("1506863348887847062") || c.interaction.member.roles.includes("1506863641545146368")) {
+      if (c.interaction.member.roles.includes("1506863348887847062") || c.interaction.member.roles.includes("1506863641545146368") || c.interaction.member.roles.includes("1320891090383011893")) {
         try {
           const result = await run(c.env, c.interaction.member.user.username, `${c.var.prompt}`);
           await c.followup(`${result}`);
