@@ -15,6 +15,12 @@
     "wrangler": "^4.93.0"
   },
   "dependencies": {
-    "discord-hono": "^0.21.2"
+    "@cloudflare/ai-chat": "^0.9.3",
+    "agents": "^0.17.3",
+    "ai": "^6.0.218",
+    "discord-hono": "^0.21.2",
+    "hono-agents": "^3.0.11",
+    "workers-ai-provider": "^3.3.0",
+    "zod": "^4.4.3"
   }
 }

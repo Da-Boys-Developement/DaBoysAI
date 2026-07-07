@@ -1,34 +1,26 @@
 import { DiscordHono } from 'discord-hono'
-
-async function run(env, user, input) {
-  const response = await env.AI.run(
-    "@cf/meta/llama-3.1-8b-instruct",
-    {
-      messages: [
-        {
-          role: "assistant",
-          content: "You are a helpful Discord assistant named \"Da Boys AI\" in a discord server NAMED \"Da Boys\", you help users with their questions and provide information on a wide range of topics."
-        },
-        {
-          role: `user`,
-          content: `${user}: ${input}`
-        }
-      ]
-    }
-  );
-
-  return response.response;
-}
+import { DiscordAgent } from './agent';
+import { getAgentByName } from 'agents';
 
 const app = new DiscordHono()
   .command("prompt", (c) =>
     c.resDefer(async (c) => {
-      const msg = await c.followup("...");
+      const msg = await c.resDefer();
 
       if (c.interaction.member.roles.includes("1506863348887847062") || c.interaction.member.roles.includes("1506863641545146368") || c.interaction.member.roles.includes("1320891090383011893")) {
         try {
-          const result = await run(c.env, c.interaction.member.user.username, `${c.var.prompt}`);
-          await c.followup(`${result}`);
+          const objId = c.env.DISCORD_AGENT.idFromName(
+            `${c.interaction.guild_id}:${c.interaction.channel_id}`
+          );
+
+          const agent = c.env.DISCORD_AGENT.get(objId);
+
+          const response = await agent.chat(
+            c.interaction.member.user.id,
+            c.var.prompt
+          );
+          
+          await c.followup(response.messages[response.messages.length - 1].content[response.messages[response.messages.length - 1].content.length - 1].text);
 
         } catch (err) {
           console.error(err);
@@ -41,4 +33,5 @@ const app = new DiscordHono()
     })
   );
 
+export { DiscordAgent };
 export default app;
